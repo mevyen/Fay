@@ -1,16 +1,51 @@
 import time
+from io import BytesIO
+import socket
 import pyaudio
+import numpy as np
+import scipy.io.wavfile as wav
+import wave
+
 from core.interact import Interact
 from core.recorder import Recorder
 from core.fay_core import FeiFei
+from core.viewer import Viewer
 from scheduler.thread_manager import MyThread
 from utils import util, config_util, stream_util, ngrok_util
 from core.wsa_server import MyServer
 
+
+
+
 feiFei: FeiFei = None
+viewerListener: Viewer = None
 recorderListener: Recorder = None
 
 __running = True
+
+
+class ViewerListener(Viewer):
+
+    def __init__(self):
+        super().__init__()
+
+    def on_interact(self, interact: Interact, event_time):
+        type_names = {
+            1: '发言',
+            2: '进入',
+            3: '送礼',
+            4: '关注'
+        }
+        util.printInfo(1, type_names[interact.interact_type], '{}: {}'.format(interact.data["user"], interact.data["msg"]), event_time)
+        if interact.interact_type == 1:
+            feiFei.last_quest_time = time.time()
+        thr = MyThread(target=feiFei.on_interact, args=[interact])
+        thr.start()
+        thr.join()
+
+    def on_change_state(self, is_live_started):
+        feiFei.set_sleep(not is_live_started)
+        pass
 
 #录制麦克风音频输入并传给aliyun
 class RecorderListener(Recorder):
@@ -105,7 +140,7 @@ class DeviceInputListener(Recorder):
 
     #recorder会等待stream不为空才开始录音
     def get_stream(self):
-        while not feiFei.deviceConnect:
+        while self.streamCache is None:
             time.sleep(1)
             pass
         return self.streamCache
@@ -125,6 +160,12 @@ class DeviceInputListener(Recorder):
 
 def console_listener():
     global feiFei
+    type_names = {
+        1: '发言',
+        2: '进入',
+        3: '送礼',
+        4: '关注'
+    }
     while __running:
         text = input()
         args = text.split(' ')
@@ -150,9 +191,19 @@ def console_listener():
             if len(args) == 1:
                 util.log(1, '错误的参数！')
             msg = text[3:len(text)]
-            util.printInfo(3, "控制台", '{}: {}'.format('控制台', msg))
-            feiFei.last_quest_time = time.time()
-            interact = Interact("console", 1, {'user': '', 'msg': msg})
+            i = 1
+            try:
+                i = int(msg)
+            except:
+                pass
+            if i < 1:
+                i = 1
+            if i > 4:
+                i = 4
+            util.printInfo(1, type_names[i], '{}: {}'.format('控制台', msg))
+            if i == 1:
+                feiFei.last_quest_time = time.time()
+            interact = Interact("console", i, {'user': '', 'msg': msg})
             thr = MyThread(target=feiFei.on_interact, args=[interact])
             thr.start()
             thr.join()
@@ -163,12 +214,16 @@ def console_listener():
 #停止服务
 def stop():
     global feiFei
+    global viewerListener
     global recorderListener
     global __running
     global deviceInputListener
 
     util.log(1, '正在关闭服务...')
     __running = False
+    if viewerListener is not None:
+        util.log(1, '正在关闭直播服务...')
+        viewerListener.stop()
     if recorderListener is not None:
         util.log(1, '正在关闭录音服务...')
         recorderListener.stop()
@@ -181,7 +236,9 @@ def stop():
 
 
 def start():
+    # global ws_server
     global feiFei
+    global viewerListener
     global recorderListener
     global __running
     global deviceInputListener
@@ -196,7 +253,15 @@ def start():
     feiFei = FeiFei()
     feiFei.start()
 
+    liveRoom = config_util.config['source']['liveRoom']
     record = config_util.config['source']['record']
+
+    
+
+    if liveRoom['enabled']:
+        util.log(1, '开启直播服务...')
+        viewerListener = ViewerListener()  # 监听直播间
+        viewerListener.start()
 
     if record['enabled']:
         util.log(1, '开启录音服务...')
@@ -219,5 +284,6 @@ def start():
 if __name__ == '__main__':
     ws_server: MyServer = None
     feiFei: FeiFei = None
+    viewerListener: Viewer = None
     recorderListener: Recorder = None
     start()

@@ -35,11 +35,11 @@ class MyServer:
             message = await self.__producer()
             if message:
                 await websocket.send(message)
-                # util.log('发送 {}'.format(message))
+                util.log(1, '===发送=== {}'.format(message))
 
     async def __handler(self, websocket, path):
         isConnect = True
-        util.log(1,"websocket连接上:{}".format(self.__port))
+        util.log(1, "websocket连接上:{}".format(self.__port))
         self.on_connect_handler()
         consumer_task = asyncio.ensure_future(self.__consumer_handler(websocket, path))
         producer_task = asyncio.ensure_future(self.__producer_handler(websocket, path))
@@ -51,6 +51,7 @@ class MyServer:
 
     # 接收处理
     async def __consumer(self, message):
+        print("=====sss===={}".format(message))
         self.on_revice_handler(message)
 
     # 发送处理
@@ -64,6 +65,8 @@ class MyServer:
     #Edit by xszyou on 20230113:通过继承此类来实现服务端的接收处理逻辑
     @abstractmethod
     def on_revice_handler(self, message):
+        print("=====收到消息====：{}".format(message))
+        util.log(1, '===收到消息=== {}'.format(message))
         pass
     #Edit by xszyou on 20230114:通过继承此类来实现服务端的连接处理逻辑
     @abstractmethod
@@ -119,6 +122,7 @@ class HumanServer(MyServer):
         super().__init__(host, port)
 
     def on_revice_handler(self, message):
+        print("=====sss===={}".format(message))
         pass
     
     def on_connect_handler(self):
@@ -129,6 +133,7 @@ class WebServer(MyServer):
         super().__init__(host, port)
 
     def on_revice_handler(self, message):
+        print("=====sss===={}".format(message))
         pass
     
     def on_connect_handler(self):
@@ -140,6 +145,7 @@ class TestServer(MyServer):
 
     def on_revice_handler(self, message):
         print(message)
+        print("=====sss===={}".format(message))
     
     def on_connect_handler(self):
         print("连接上了")

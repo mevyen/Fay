@@ -1,19 +1,19 @@
 {
     "attribute": {
         "age": "\u6210\u5e74",
-        "birth": "Github",
+        "birth": "\u4e2d\u56fd",
         "constellation": "\u6c34\u74f6\u5ea7",
         "contact": "qq467665317",
-        "gender": "\u5973",
+        "gender": "\u7537",
         "hobby": "\u53d1\u5446",
-        "job": "\u52a9\u7406",
-        "name": "\u83f2\u83f2",
+        "job": "\u4ea7\u54c1\u5e03\u9053\u8005",
+        "name": "\u9648\u5347",
         "voice": "XIAO_XIAO",
         "zodiac": "\u86c7"
     },
     "interact": {
         "QnA": "qa_demo.xlsx",
-        "maxInteractTime": 15,
+        "maxInteractTime": 11,
         "perception": {
             "chat": 10,
             "follow": 10,
@@ -21,33 +21,33 @@
             "indifferent": 10,
             "join": 10
         },
-        "playSound": true,
-        "visualization": false
+        "playSound": false
     },
     "items": [
         {
-            "QnA": "",
-            "demoVideo": "",
-            "enabled": false,
+            "QnA": "qa_demo.xlsx",
+            "demoVideo": "\u5317\u4eac\u5e02\u671d\u9633\u533a\u5bcc\u56fd\u6d77\u5e95\u4e16\u754c7",
+            "enabled": true,
             "explain": {
-                "character": "",
-                "discount": "",
-                "intro": "",
-                "price": "",
-                "promise": "",
-                "usage": ""
+                "character": "\u5317\u4eac\u5e02\u671d\u9633\u533a\u5bcc\u56fd\u6d77\u5e95\u4e16\u754c6",
+                "discount": "\u5317\u4eac\u5e02\u671d\u9633\u533a\u5bcc\u56fd\u6d77\u5e95\u4e16\u754c4",
+                "intro": "\u5317\u4eac\u5e02\u671d\u9633\u533a\u5bcc\u56fd\u6d77\u5e95\u4e16\u754c1",
+                "price": "\u5317\u4eac\u671d\u9633\u533a\u5de5\u4f53\u5bcc\u56fd\u6d77\u5e95\u4e16\u754c\n\u591c\u573a\uff1a17\uff1a00---20\uff1a00\n\u767d\u5929\uff1a9\uff1aoo----20\uff1a00\n\u767d\u59291\u7c73\u4ee5\u4e0b\u5c0f\u670b\u53cb\u514d\u8d39\uff0c\u665a\u4e0a1.2\u7c73\u4ee5\u4e0b\u5c0f\u670b\u53cb\u514d\u8d39\n \u5e73\u65e5\u591c\u573a\u7f8e\u4eba\u9c7c\uff1a19\uff1a15\n\u5468\u672b\u591c\u573a\u7f8e\u4eba\u9c7c\uff1a17\uff1a45   19\uff1a15\n1\u53f7\u94fe\u63a5\u662f\u5468\u4e00\u5230\u5468\u4e94\u591c\u573a\uff0839.9\u5143\uff09\n2\u53f7\u94fe\u63a5\u662f\u5468\u672b\u591c9.9\u5143\uff09\n6\u53f7\u7ebf\u4e1c\u5927\u6865A\u53e3\u51fa\u573a\uff082\u53f7\u7ebf\u671d\u9633\u95e8A\u53e3\u51fa\n\u6d77\u72ee\u8868\u6f14\u3001\u7f8e\u4eba\u9c7c\u8868\u6f14\u3001\u4eba\u9ca8\u5171\u821e\uff0c\u9ec4\u91d1\u98ce\u66b4\u8868\u6f14\u3001\u6d77\u5e95\u9b54\u672f\u8868\u6f14",
+                "promise": "\u5317\u4eac\u5e02\u671d\u9633\u533a\u5bcc\u56fd\u6d77\u5e95\u4e16\u754c5",
+                "usage": "\u5317\u4eac\u5e02\u671d\u9633\u533a\u5bcc\u56fd\u6d77\u5e95\u4e16\u754c2"
             },
-            "name": ""
+            "name": "\u5317\u4eac\u5e02\u671d\u9633\u533a\u5bcc\u56fd\u6d77\u5e95\u4e16\u754c0"
         }
     ],
     "source": {
         "liveRoom": {
-            "enabled": false,
-            "url": "\u65b0\u7248\u672c\u4e0d\u7528\u586b\u5199"
+            "enabled": true,
+            "url": "https://v.douyin.com/iJ27UgRU/"
         },
         "record": {
-            "device": "",
-            "enabled": false
+            "channels": 2,
+            "device": "\u9ea6\u514b\u98ce (USB_MIC)",
+            "enabled": true
         }
     }
 }

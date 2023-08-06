@@ -2,8 +2,6 @@
 
 通讯地址: [`ws://127.0.0.1:10002`](ws://127.0.0.1:10002)
 
-注：ue作为客户端
-
 
 
 ### 发送情绪值
@@ -35,8 +33,7 @@
     "Topic": "Unreal",
     "Data": {
         "Key": "audio",
-        "Value": "C:\samples\sample-1.wav",
-        "Lips":[{"Lip": "sil", "Time": 180}, {"Lip": "FF", "Time": 144}],
+        "Value": "C:\samples\sample-1.mp3",
         "Time": 10,
         "Type": "interact"
     }
@@ -50,7 +47,6 @@
 | Data.Value | 音频文件绝对路径 | str   |                 |
 | Data.Time  | 音频时长 (秒)    | float |                 |
 | Data.Type  | 发言类型         | str   | interact/script |
-| Data.Lips  | 视音素           | array |                 |
 
 
 

@@ -31,7 +31,18 @@ class QAService:
             [['换个性别', '换个声音'], 'changeVoice']
         ]
 
+        # 商品提问关键字
+        self.explain_keyword = [
+            [['是什么'], 'intro'],
+            [['怎么用', '使用场景', '有什么作用'], 'usage'],
+            [['怎么卖', '多少钱', '售价'], 'price'],
+            [['便宜点', '优惠', '折扣', '促销'], 'discount'],
+            [['质量', '保证', '担保'], 'promise'],
+            [['特点', '优点'], 'character'],
+        ]
+
     def question(self, query_type, text):
+        answer = None
         if query_type == 'qa':
             answer_dict = self.__read_qna(cfg.config['interact']['QnA'])
             answer = self.__get_keyword(answer_dict, text)
@@ -40,8 +51,41 @@ class QAService:
             answer = self.__get_keyword(answer_dict, text)
         elif query_type == 'command':
             answer = self.__get_keyword(self.command_keyword, text)
+        elif query_type == 'goods':
+            items = self.__get_item_list()
+            if len(items) > 0:
+                item = items[0]
+
+                # 跨商品物品问答匹配
+                for ite in items:
+                    name = ite["name"]
+                    if name != item["name"]:
+                        if name in text or self.__string_similar(text, name) > 0.6:
+                            item = ite
+                            break
+
+                # 商品介绍问答
+                keyword = self.__get_keyword(self.explain_keyword, text)
+                if keyword is not None:
+                    try:
+                        return item["explain"][keyword]
+                    except BaseException as e:
+                        print(e)
+
+                # 商品问答
+                answer = self.__get_keyword(self.__read_qna(item["QnA"]), text)
+                if answer is not None:
+                    return answer
+
+
         return answer
     
+    def __get_item_list(self) -> list:
+        items = []
+        for item in cfg.config["items"]:
+            if item["enabled"]:
+                items.append(item)
+        return items
 
     def __read_qna(self, filename) -> list:
         qna = []
